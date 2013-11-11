@@ -1,4 +1,4 @@
-package tools;
+package tools.main;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
