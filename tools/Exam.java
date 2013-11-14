@@ -6,11 +6,11 @@ public class Exam {
 	
 	private String personalNumber;
 	
-	private int mark;
+	private String mark;
 	
-	private int year;
+	private String year;
 	
-	private int semester;
+	private String semester;
 	
 	private String season;
 	
@@ -18,7 +18,7 @@ public class Exam {
 	
 	private String code;
 	
-	private int creditNumber;
+	private String creditNumber;
 	
 	private String group;
 	
@@ -26,11 +26,40 @@ public class Exam {
 	
 	private String lecturer;
 	
-	private int learningYear;
+	private String learningYear;
 	
 	private String learningLevel;
 	
 	private String stream;
+
+	public boolean isEmpty() {
+		return fullName == null && personalNumber == null && code == null && creditNumber == null && group == null 
+				&& learningLevel == null && learningYear == null && lecturer == null && mark == null && program == null && season == null 
+				&& semester == null && stream == null && subject == null && year == null;
+	}
+	
+	public void trimFullName() {
+		if (fullName != null) {
+			String[] arr = fullName.split("\\s+");
+			if (arr.length == 2) {
+				fullName = arr[0] + " " +arr[1];
+			}
+		}
+	}
+
+	public void adjustFullName() {
+		if (fullName != null) {
+			String[] arr = fullName.split("\\s+");
+			if (arr.length == 2) {
+				fullName = arr[0] + " " +arr[1];
+				if (!fullName.endsWith("ი")) {
+					fullName = "";
+				} else {
+					fullName = arr[1];
+				}
+			}
+		}
+	}
 
 	public String getFullName() {
 		return fullName;
@@ -46,30 +75,6 @@ public class Exam {
 
 	public void setPersonalNumber(String personalNumber) {
 		this.personalNumber = personalNumber;
-	}
-
-	public int getMark() {
-		return mark;
-	}
-
-	public void setMark(int mark) {
-		this.mark = mark;
-	}
-
-	public int getYear() {
-		return year;
-	}
-
-	public void setYear(int year) {
-		this.year = year;
-	}
-
-	public int getSemester() {
-		return semester;
-	}
-
-	public void setSemester(int semester) {
-		this.semester = semester;
 	}
 
 	public String getSeason() {
@@ -96,14 +101,6 @@ public class Exam {
 		this.code = code;
 	}
 
-	public int getCreditNumber() {
-		return creditNumber;
-	}
-
-	public void setCreditNumber(int creditNumber) {
-		this.creditNumber = creditNumber;
-	}
-
 	public String getGroup() {
 		return group;
 	}
@@ -128,14 +125,6 @@ public class Exam {
 		this.lecturer = lecturer;
 	}
 
-	public int getLearningYear() {
-		return learningYear;
-	}
-
-	public void setLearningYear(int learningYear) {
-		this.learningYear = learningYear;
-	}
-
 	public String getLearningLevel() {
 		return learningLevel;
 	}
@@ -152,10 +141,46 @@ public class Exam {
 		this.stream = stream;
 	}
 
-	public boolean isEmpty() {
-		return fullName == null && personalNumber == null && code == null && creditNumber == 0 && group == null 
-				&& learningLevel == null && learningYear == 0 && lecturer == null && mark == 0 && program == null && season == null 
-				&& semester == 0 && stream == null && subject == null && year == 0;
-	}	
+	public String getMark() {
+		return mark;
+	}
+
+	public void setMark(String mark) {
+		this.mark = mark;
+	}
+
+	public String getYear() {
+		return year;
+	}
+
+	public void setYear(String year) {
+		this.year = year;
+	}
+
+	public String getSemester() {
+		return semester;
+	}
+
+	public void setSemester(String semester) {
+		this.semester = semester;
+	}
+
+	public String getCreditNumber() {
+		return creditNumber;
+	}
+
+	public void setCreditNumber(String creditNumber) {
+		this.creditNumber = creditNumber;
+	}
+
+	public String getLearningYear() {
+		return learningYear;
+	}
+
+	public void setLearningYear(String learningYear) {
+		this.learningYear = learningYear;
+	}
+	
+	
 	
 }

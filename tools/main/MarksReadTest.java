@@ -13,6 +13,8 @@ import tools.SystemParameters;
 
 public class MarksReadTest {
 	
+	public static String[] INCORRECT_NAMES = {"აპოლონი", "არტემი", "ბაგრატ", "ბექარი", "გურამი", "დავითი", "ელდარი", "ვალერიანი", "ვახუშტი", "ვლადიმერი", "ზურაბი", "თამარ", "თინათინი", "თემური", "იოსები", "იოსები", "ლევანი", "მარიამი", "მერაბი", "ქეთევანი"};
+	
 	public static void log(String message) {
 		System.out.println(message);
 	}
@@ -57,6 +59,8 @@ public class MarksReadTest {
 			colors.add(0);
 			colors.add(3);
 			for (Exam exam : exams) {
+				exam.trimFullName();
+				exam.adjustFullName();
 				ExamExcelFileProcessor.writeExam(sheet, row++, exam, colors);
 			}
 			

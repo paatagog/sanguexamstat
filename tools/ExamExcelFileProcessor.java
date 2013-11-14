@@ -46,17 +46,17 @@ public class ExamExcelFileProcessor {
 		try {		
 			ex.setPersonalNumber(sheet.getCell(0, row).getContents());
 			ex.setFullName(sheet.getCell(1, row).getContents());
-			ex.setMark(Integer.parseInt(sheet.getCell(2, row).getContents()));
-			ex.setYear(Integer.parseInt(sheet.getCell(3, row).getContents()));
-			ex.setSemester(Integer.parseInt(sheet.getCell(7, row).getContents()));
+			ex.setMark(sheet.getCell(2, row).getContents());
+			ex.setYear(sheet.getCell(3, row).getContents());
+			ex.setSemester(sheet.getCell(7, row).getContents());
 			ex.setSeason(sheet.getCell(4, row).getContents());
 			ex.setSubject(sheet.getCell(5, row).getContents());
 			ex.setCode(sheet.getCell(6, row).getContents());
-			ex.setCreditNumber(Integer.parseInt(sheet.getCell(8, row).getContents()));
+			ex.setCreditNumber(sheet.getCell(8, row).getContents());
 			ex.setGroup(sheet.getCell(9, row).getContents());
 			ex.setProgram(sheet.getCell(10, row).getContents());
 			ex.setLecturer(sheet.getCell(11, row).getContents());
-			ex.setLearningYear(Integer.parseInt(sheet.getCell(12, row).getContents()));
+			ex.setLearningYear(sheet.getCell(12, row).getContents());
 			ex.setLearningLevel(sheet.getCell(13, row).getContents());
 			ex.setStream(sheet.getCell(14, row).getContents());
 			
@@ -89,17 +89,17 @@ public class ExamExcelFileProcessor {
 	public static void writeExam(WritableSheet sheet, int row, Exam ex) throws RowsExceededException, WriteException {
 		sheet.addCell(new Label(0, row, ex.getPersonalNumber()));
 		sheet.addCell(new Label(1, row, ex.getFullName()));
-		sheet.addCell(new Label(2, row, String.valueOf(ex.getMark())));
-		sheet.addCell(new Label(3, row, String.valueOf(ex.getYear())));
-		sheet.addCell(new Label(4, row, String.valueOf(ex.getSemester())));
-		sheet.addCell(new Label(5, row, ex.getSeason()));
-		sheet.addCell(new Label(6, row, ex.getSubject()));
-		sheet.addCell(new Label(7, row, ex.getCode()));
-		sheet.addCell(new Label(8, row, String.valueOf(ex.getCreditNumber())));
+		sheet.addCell(new Label(2, row, ex.getMark()));
+		sheet.addCell(new Label(3, row, ex.getYear()));
+		sheet.addCell(new Label(4, row, ex.getSeason()));
+		sheet.addCell(new Label(5, row, ex.getSubject()));
+		sheet.addCell(new Label(6, row, ex.getCode()));
+		sheet.addCell(new Label(7, row, ex.getSemester()));
+		sheet.addCell(new Label(8, row, ex.getCreditNumber()));
 		sheet.addCell(new Label(9, row, ex.getGroup()));
 		sheet.addCell(new Label(10, row, ex.getProgram()));
 		sheet.addCell(new Label(11, row, ex.getLecturer()));
-		sheet.addCell(new Label(12, row, ex.getLearningLevel()));
+		sheet.addCell(new Label(12, row, ex.getLearningYear()));
 		sheet.addCell(new Label(13, row, ex.getLearningLevel()));
 		sheet.addCell(new Label(14, row, ex.getStream()));
 	}
@@ -107,12 +107,12 @@ public class ExamExcelFileProcessor {
 	public static void writeFileHeader(WritableSheet sheet) throws RowsExceededException, WriteException {
 		sheet.addCell(new Label(0, 0, "პირადი ნომერი"));
 		sheet.addCell(new Label(1, 0, "გვარი, სახელი"));
-		sheet.addCell(new Label(2, 0, "შეფასება"));
+		sheet.addCell(new Label(2, 0, "ქულა"));
 		sheet.addCell(new Label(3, 0, "წელიწადი"));
-		sheet.addCell(new Label(4, 0, "სემესტრი"));
-		sheet.addCell(new Label(5, 0, "სეზონი"));
-		sheet.addCell(new Label(6, 0, "საგანი"));
-		sheet.addCell(new Label(7, 0, "კოდი"));
+		sheet.addCell(new Label(4, 0, "სეზონი"));
+		sheet.addCell(new Label(5, 0, "საგანი"));
+		sheet.addCell(new Label(6, 0, "კოდი"));
+		sheet.addCell(new Label(7, 0, "სემესტრი"));
 		sheet.addCell(new Label(8, 0, "კრედიტი"));
 		sheet.addCell(new Label(9, 0, "ჯგუფი"));
 		sheet.addCell(new Label(10, 0, "პროგრამა"));
@@ -121,7 +121,6 @@ public class ExamExcelFileProcessor {
 		sheet.addCell(new Label(13, 0, "სწავლების საფეხური"));
 		sheet.addCell(new Label(14, 0, "ნაკადი"));
 	}
-
 	
 
 }
