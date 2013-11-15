@@ -1,6 +1,12 @@
 package tools;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 public class Exam {
+	
+	private static Set<String> depricatedNames = new HashSet<String>(Arrays.asList(new String[] {"იოსები","მარიამი","ზურაბი","დავითი","ნიკოლოზი","თინათინი","რამაზი","მერაბი","ბაგრატი","არტემი","ლევანი","ქეთევანი","ვალერიანი","ელდარი","ვლადიმერი","მიხეილი"})); 
 	
 	private String fullName;
 	
@@ -51,12 +57,7 @@ public class Exam {
 		if (fullName != null) {
 			String[] arr = fullName.split("\\s+");
 			if (arr.length == 2) {
-				fullName = arr[0] + " " +arr[1];
-				if (!fullName.endsWith("ი")) {
-					fullName = "";
-				} else {
-					fullName = arr[1];
-				}
+				fullName = arr[0] + " " + (depricatedNames.contains(arr[1]) ? arr[1].substring(0, arr[1].length() - 1) : arr[1]);
 			}
 		}
 	}
