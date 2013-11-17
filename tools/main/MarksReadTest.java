@@ -13,8 +13,6 @@ import tools.SystemParameters;
 
 public class MarksReadTest {
 	
-	public static String[] INCORRECT_NAMES = {"აპოლონი", "არტემი", "ბაგრატ", "ბექარი", "გურამი", "დავითი", "ელდარი", "ვალერიანი", "ვახუშტი", "ვლადიმერი", "ზურაბი", "თამარ", "თინათინი", "თემური", "იოსები", "იოსები", "ლევანი", "მარიამი", "მერაბი", "ქეთევანი"};
-	
 	public static void log(String message) {
 		System.out.println(message);
 	}
@@ -29,13 +27,13 @@ public class MarksReadTest {
 			log("წაკითხულია " + exams.size() + " შეფასება");
 			WritableWorkbook workbook = Workbook.createWorkbook(new File(SystemParameters.INPUT_DATA_FOLDER + "/" + "shedegi.xls"));
 			WritableSheet sheet = workbook.createSheet("შედეგი", 0);
-			ExamExcelFileProcessor.writeFileHeader(sheet);
+			ExamExcelFileProcessor.writeHeader(sheet);
 			int row = 1;
 			List<Integer> colors = new ArrayList<Integer> ();
 			colors.add(0);
 			colors.add(3);
 			for (Exam exam : exams) {
-				ExamExcelFileProcessor.writeExam(sheet, row++, exam, colors);
+				ExamExcelFileProcessor.write(sheet, row++, exam, colors);
 			}
 			
 			workbook.write(); 
@@ -53,7 +51,7 @@ public class MarksReadTest {
 			log("წაკითხულია " + exams.size() + " შეფასება");
 			WritableWorkbook workbook = Workbook.createWorkbook(new File(SystemParameters.INPUT_DATA_FOLDER + "/" + "shedegi.xls"));
 			WritableSheet sheet = workbook.createSheet("შედეგი", 0);
-			ExamExcelFileProcessor.writeFileHeader(sheet);
+			ExamExcelFileProcessor.writeHeader(sheet);
 			int row = 1;
 			List<Integer> colors = new ArrayList<Integer> ();
 			colors.add(0);
@@ -61,7 +59,7 @@ public class MarksReadTest {
 			for (Exam exam : exams) {
 				exam.trimFullName();
 				exam.adjustFullName();
-				ExamExcelFileProcessor.writeExam(sheet, row++, exam, colors);
+				ExamExcelFileProcessor.write(sheet, row++, exam, colors);
 			}
 			
 			workbook.write(); 

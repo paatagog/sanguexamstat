@@ -26,11 +26,11 @@ public class ExamExcelFileProcessor {
 			Sheet sheet = workbook.getSheet(0);
 			
 			int row = 1;
-			Exam ex = readExam(sheet, row++);
+			Exam ex = read(sheet, row++);
 			
 			while (ex != null) {
 				exams.add(ex);
-				ex = readExam(sheet, row++);
+				ex = read(sheet, row++);
 			}
 		} catch (BiffException e) {
 			e.printStackTrace();
@@ -40,7 +40,7 @@ public class ExamExcelFileProcessor {
 		return exams;
 	}
 	
-	public static Exam readExam(Sheet sheet, int row) {
+	public static Exam read(Sheet sheet, int row) {
 		Exam ex = new Exam();
 		
 		try {		
@@ -71,22 +71,20 @@ public class ExamExcelFileProcessor {
 		return ex;
 	}
 	
-	public static void writeExam(WritableSheet sheet, int row, Exam ex, List<Integer> colors) throws RowsExceededException, WriteException {
-		writeExam(sheet, row, ex);
+	public static void write(WritableSheet sheet, int row, Exam ex, List<Integer> colors) throws RowsExceededException, WriteException {
+		write(sheet, row, ex);
 		for (Integer i : colors) {
 			sheet.addCell(new Label(i, row, sheet.getCell(i, row).getContents(), getCellFormat(Colour.YELLOW2, Pattern.SOLID)));			
 		}		
 	}
 	
 	private static WritableCellFormat getCellFormat(Colour colour, Pattern pattern) throws WriteException {
-//	    WritableFont cellFont = new WritableFont(WritableFont.TIMES, 16);
-//	    WritableCellFormat cellFormat = new WritableCellFormat(cellFont);
 	    WritableCellFormat cellFormat = new WritableCellFormat();
 	    cellFormat.setBackground(colour, pattern);
 	    return cellFormat;
 	 }
 
-	public static void writeExam(WritableSheet sheet, int row, Exam ex) throws RowsExceededException, WriteException {
+	public static void write(WritableSheet sheet, int row, Exam ex) throws RowsExceededException, WriteException {
 		sheet.addCell(new Label(0, row, ex.getPersonalNumber()));
 		sheet.addCell(new Label(1, row, ex.getFullName()));
 		sheet.addCell(new Label(2, row, ex.getMark()));
@@ -104,7 +102,7 @@ public class ExamExcelFileProcessor {
 		sheet.addCell(new Label(14, row, ex.getStream()));
 	}
 
-	public static void writeFileHeader(WritableSheet sheet) throws RowsExceededException, WriteException {
+	public static void writeHeader(WritableSheet sheet) throws RowsExceededException, WriteException {
 		sheet.addCell(new Label(0, 0, "პირადი ნომერი"));
 		sheet.addCell(new Label(1, 0, "გვარი, სახელი"));
 		sheet.addCell(new Label(2, 0, "ქულა"));
