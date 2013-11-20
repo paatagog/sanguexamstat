@@ -16,4 +16,17 @@ public enum AcademicLevel {
 		}		
 		return level;
 	}
+
+	public String getName() {
+		switch (this) {
+		case BACHELOR:
+			return "ბაკალავრიატი";
+		case MAGISTRACY:
+			return "მაგისტრატურა";
+		case DOCTORATE:
+			return "დოქტორანტურა";
+		}
+		return null;
+	}
+	
 }

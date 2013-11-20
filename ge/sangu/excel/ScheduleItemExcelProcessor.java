@@ -45,10 +45,12 @@ public class ScheduleItemExcelProcessor {
 			int row = 1;
 			ScheduleItem o = read(sheet, row++);
 			
-			while (o != null) {
+			while (row < sheet.getRows() && o != null) {
 				list.add(o);
 				o = read(sheet, row++);
 			}
+			list.add(o);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		
@@ -64,15 +66,26 @@ public class ScheduleItemExcelProcessor {
 			return null;
 		}
 		o.setId(Integer.parseInt(id));
-		Lecture l = lectures.get(Integer.parseInt(sheet.getCell(i++, row).getContents()));
-		if (l == null) {
-			throw new Exception("Error reding schedule items. Lecture not found. Schedule number = " + i);
+		String lId = sheet.getCell(i++, row).getContents();
+		Lecture l = null;
+		if (lId != null && !lId.equals("")) {
+			l = lectures.get(Integer.parseInt(lId));
+			if (l == null) {
+				throw new Exception("Error reding schedule items. Lecture not found. Schedule number = " + i);
+			}
 		}
 		o.setLecture(l);
 		o.setRoom(sheet.getCell(i++, row).getContents());
-		Lecturer le = lecturers.get(Integer.parseInt(sheet.getCell(i++, row).getContents()));
-		if (le ==null) {
-			throw new Exception("Error reding schedule items. Lecturer not found. Schedule number = " + i);
+		
+		
+		
+		lId = sheet.getCell(i++, row).getContents();
+		Lecturer le = null;
+		if (lId != null && !lId.equals("")) {
+			le = lecturers.get(Integer.parseInt(lId));
+			if (le == null) {
+				throw new Exception("Error reding schedule items. Lecturer not found. Schedule number = " + i);
+			}
 		}
 		o.setLecturer(le);
 		o.setLectureType(LectureType.getFromString(sheet.getCell(i++, row).getContents()));

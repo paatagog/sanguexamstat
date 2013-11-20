@@ -25,7 +25,7 @@ public class StudentsReadWriteTest {
 	}
 	
 	public static void log(int message) {
-		System.out.println(message);
+		log(String.valueOf(message));
 	}
 	
 	public static void rewriteExample() {

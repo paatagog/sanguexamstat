@@ -3,13 +3,11 @@ package ge.sangu.excel;
 import ge.sangu.model.Lecture;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import jxl.Sheet;
 import jxl.Workbook;
-import jxl.read.biff.BiffException;
 
 public class LectureExcelProcessor {
 
@@ -34,13 +32,12 @@ public class LectureExcelProcessor {
 			int row = 1;
 			Lecture o = read(sheet, row++);
 			
-			while (o != null) {
+			while (row < sheet.getRows() && o != null) {
 				list.add(o);
 				o = read(sheet, row++);
 			}
-		} catch (BiffException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+			list.add(o);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}		
 		return list;

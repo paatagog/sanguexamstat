@@ -1,9 +1,14 @@
 package ge.sangu.model;
 
+import ge.sangu.utils.CalendarUtils;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
 public class ScheduleItem {
+	
+	private static SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 	
 	private Integer id;
 	
@@ -21,9 +26,42 @@ public class ScheduleItem {
 	
 	private Integer course;
 	
-	private String Group;
+	private String group;
 	
 	private Integer day;
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(id);
+		if (lecture != null) {
+			sb.append(" ").append(lecture.getName());
+		}
+		if (room != null) {
+			sb.append(" ").append(room);
+		}
+		if (lecturer != null) {
+			sb.append(" ").append(lecturer.getShortName());
+		}
+		if (lectureType != null) {
+			sb.append(" ").append(lectureType.getName());
+		}
+		if (time != null) {
+			sb.append(" ").append(sdf.format(time));
+		}
+		if (academicLevel != null) {
+			sb.append(" ").append(academicLevel.getName());
+		}
+		if (course != null) {
+			sb.append(" ").append(course);
+		}
+		if (group != null) {
+			sb.append(" ").append(group);
+		}
+		if (day != null) {
+			sb.append(" ").append(CalendarUtils.getWeekDayName(day));
+		}
+		return sb.toString();
+	}
 	
 	public boolean isEmpty() {
 		return id == null;
@@ -94,11 +132,11 @@ public class ScheduleItem {
 	}
 
 	public String getGroup() {
-		return Group;
+		return group;
 	}
 
 	public void setGroup(String group) {
-		Group = group;
+		this.group = group;
 	}
 
 	public Integer getDay() {

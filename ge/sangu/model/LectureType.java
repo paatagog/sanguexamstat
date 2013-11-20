@@ -17,4 +17,16 @@ public enum LectureType {
 		return type;
 	}
 	
+	public String getName() {
+		switch (this) {
+		case LECTURE:
+			return "ლექცია";
+		case SEMINAR:
+			return "სემინარი";
+		case LABORATORY:
+			return "ლაბორატორია";
+		}
+		return null;
+	}
+	
 }
