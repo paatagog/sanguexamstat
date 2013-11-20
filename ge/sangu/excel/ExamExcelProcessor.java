@@ -1,4 +1,6 @@
-package tools;
+package ge.sangu.excel;
+
+import ge.sangu.model.Exam;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,7 +18,7 @@ import jxl.write.WritableSheet;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
 
-public class ExamExcelFileProcessor {
+public class ExamExcelProcessor {
 
 	public static List<Exam> read(String fileName) {
 		List<Exam> exams = new ArrayList<Exam> ();

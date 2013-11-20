@@ -1,4 +1,6 @@
-package tools;
+package ge.sangu.model;
+
+import ge.sangu.utils.GeorgianNamesAdjuster;
 
 public class Exam {
 	

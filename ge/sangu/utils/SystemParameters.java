@@ -1,4 +1,4 @@
-package tools;
+package ge.sangu.utils;
 
 public class SystemParameters {
 	public static String INPUT_DATA_FOLDER = "c:/dev/sanguexamstat/sources/resources/";

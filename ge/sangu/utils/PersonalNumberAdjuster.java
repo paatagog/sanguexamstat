@@ -1,4 +1,4 @@
-package tools;
+package ge.sangu.utils;
 
 public class PersonalNumberAdjuster {
 

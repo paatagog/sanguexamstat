@@ -1,4 +1,6 @@
-package tools;
+package ge.sangu.excel;
+
+import ge.sangu.model.Student;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,16 +18,25 @@ import jxl.write.WritableSheet;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
 
-public class StudentExcelFileProcessor {
-	
-	
+public class StudentExcelProcessor {
 	
 	public static List<Student> read(String fileName) {
+		return read(fileName, null, null);
+	}
+
+	public static List<Student> read(String fileName, Integer sheetNumber, String sheetName) {
 		List<Student> exams = new ArrayList<Student> ();
 		try {
 			
 			Workbook workbook = Workbook.getWorkbook(new File(fileName));
-			Sheet sheet = workbook.getSheet(0);
+			Sheet sheet = null;
+			if (sheetNumber == null && sheetName == null) {
+				sheet = workbook.getSheet(0);
+			} else if (sheetNumber != null) {
+				sheet = workbook.getSheet(sheetNumber);
+			} else {
+				sheet = workbook.getSheet(sheetName);
+			}
 			
 			int row = 1;
 			Student ex = read(sheet, row++);

@@ -1,4 +1,8 @@
-package tools.main;
+package ge.sangu.tools;
+
+import ge.sangu.excel.ExamExcelProcessor;
+import ge.sangu.model.Exam;
+import ge.sangu.utils.SystemParameters;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -7,9 +11,6 @@ import java.util.List;
 import jxl.Workbook;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
-import tools.Exam;
-import tools.ExamExcelFileProcessor;
-import tools.SystemParameters;
 
 public class MarksReadTest {
 	
@@ -23,11 +24,11 @@ public class MarksReadTest {
 	
 	public static void rewriteExample() {
 		try {
-			List<Exam> exams = ExamExcelFileProcessor.read(SystemParameters.INPUT_DATA_FOLDER + "/" + "nishnebi.xls");
+			List<Exam> exams = ExamExcelProcessor.read(SystemParameters.INPUT_DATA_FOLDER + "/" + "nishnebi.xls");
 			log("წაკითხულია " + exams.size() + " შეფასება");
 			WritableWorkbook workbook = Workbook.createWorkbook(new File(SystemParameters.INPUT_DATA_FOLDER + "/" + "shedegi.xls"));
 			WritableSheet sheet = workbook.createSheet("შედეგი", 0);
-			ExamExcelFileProcessor.writeHeader(sheet);
+			ExamExcelProcessor.writeHeader(sheet);
 			int row = 1;
 			List<Integer> colors = new ArrayList<Integer> ();
 			colors.add(0);
@@ -35,7 +36,7 @@ public class MarksReadTest {
 			for (Exam exam : exams) {
 				exam.trimFullName();
 				exam.adjustFullName();
-				ExamExcelFileProcessor.write(sheet, row++, exam, colors);
+				ExamExcelProcessor.write(sheet, row++, exam, colors);
 			}
 			
 			workbook.write(); 

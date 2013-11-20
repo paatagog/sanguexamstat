@@ -1,4 +1,12 @@
-package tools.main;
+package ge.sangu.tools;
+
+import ge.sangu.excel.ExamExcelProcessor;
+import ge.sangu.excel.StudentExcelProcessor;
+import ge.sangu.model.Exam;
+import ge.sangu.model.Student;
+import ge.sangu.utils.GeorgianNamesAdjuster;
+import ge.sangu.utils.PersonalNumberAdjuster;
+import ge.sangu.utils.SystemParameters;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -9,13 +17,6 @@ import java.util.Map;
 import jxl.Workbook;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
-import tools.Exam;
-import tools.ExamExcelFileProcessor;
-import tools.GeorgianNamesAdjuster;
-import tools.PersonalNumberAdjuster;
-import tools.Student;
-import tools.StudentExcelFileProcessor;
-import tools.SystemParameters;
 
 public class StudentsReadWriteTest {
 	
@@ -29,11 +30,11 @@ public class StudentsReadWriteTest {
 	
 	public static void rewriteExample() {
 		try {
-			List<Student> studnets = StudentExcelFileProcessor.read(SystemParameters.INPUT_DATA_FOLDER + "/" + "students.xls");
+			List<Student> studnets = StudentExcelProcessor.read(SystemParameters.INPUT_DATA_FOLDER + "/" + "students.xls");
 			log("წაკითხულია " + studnets.size() + " ჩანაწერი");
 			WritableWorkbook workbook = Workbook.createWorkbook(new File(SystemParameters.INPUT_DATA_FOLDER + "/" + "students-rewritten.xls"));
 			WritableSheet sheet = workbook.createSheet("შედეგი", 0);
-			StudentExcelFileProcessor.writeHeader(sheet);
+			StudentExcelProcessor.writeHeader(sheet);
 			int row = 1;
 			List<Integer> colors = new ArrayList<Integer> ();
 			colors.add(0);
@@ -49,7 +50,7 @@ public class StudentsReadWriteTest {
 				if (s.getOrderNumber() != null && s.getOrderNumber().startsWith("#")) {
 					s.setOrderNumber(s.getOrderNumber().substring(1));
 				}
-				StudentExcelFileProcessor.write(sheet, row++, s);
+				StudentExcelProcessor.write(sheet, row++, s);
 			}
 			
 			workbook.write(); 
@@ -63,8 +64,8 @@ public class StudentsReadWriteTest {
 	
 	public static void correctPersonalNumber() {
 		try {
-			List<Student> studnets = StudentExcelFileProcessor.read(SystemParameters.INPUT_DATA_FOLDER + "/" + "students.xls");
-			List<Exam> exams = ExamExcelFileProcessor.read(SystemParameters.INPUT_DATA_FOLDER + "/" + "nishnebi.xls");
+			List<Student> studnets = StudentExcelProcessor.read(SystemParameters.INPUT_DATA_FOLDER + "/" + "students.xls");
+			List<Exam> exams = ExamExcelProcessor.read(SystemParameters.INPUT_DATA_FOLDER + "/" + "nishnebi.xls");
 			Map<String, String> personalNumbers = new HashMap<String, String>();
 			for (Exam exam : exams) {
 				personalNumbers.put(exam.getFullName(), exam.getPersonalNumber());
@@ -72,7 +73,7 @@ public class StudentsReadWriteTest {
 			log("წაკითხულია " + studnets.size() + " ჩანაწერი");
 			WritableWorkbook workbook = Workbook.createWorkbook(new File(SystemParameters.INPUT_DATA_FOLDER + "/" + "students-rewritten.xls"));
 			WritableSheet sheet = workbook.createSheet("შედეგი", 0);
-			StudentExcelFileProcessor.writeHeader(sheet);
+			StudentExcelProcessor.writeHeader(sheet);
 			int row = 1;
 			for (Student s : studnets) {
 				String fullName = s.getLastName() + " " + s.getFirstName();
@@ -82,7 +83,7 @@ public class StudentsReadWriteTest {
 						s.setPersonalNumber(personalNumbers.get(fullName));
 					}
 				}				
-				StudentExcelFileProcessor.write(sheet, row++, s);
+				StudentExcelProcessor.write(sheet, row++, s);
 			}
 			
 			workbook.write(); 

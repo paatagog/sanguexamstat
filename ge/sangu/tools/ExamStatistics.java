@@ -1,4 +1,4 @@
-package tools.main;
+package ge.sangu.tools;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
