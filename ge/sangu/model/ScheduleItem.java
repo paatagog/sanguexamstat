@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class ScheduleItem {
+public class ScheduleItem implements Comparable<ScheduleItem> {
 	
 	private static SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 	
@@ -145,6 +145,51 @@ public class ScheduleItem {
 
 	public void setDay(Integer day) {
 		this.day = day;
+	}
+
+	@Override
+	public int compareTo(ScheduleItem s) {
+		if (day != null && s.getDay() == null) {
+			return 1;
+		}
+		if (day == null && s.getDay() != null) {
+			return -1;
+		}
+		if (day != null && s.getDay() != null) {
+			if (day.intValue() < s.getDay().intValue()) {
+				return -1;
+			} else if (day.intValue() > s.getDay().intValue()) {
+				return +1;
+			}
+		}
+		
+		if (time != null && s.getTime() == null) {
+			return 1;
+		}
+		if (time == null && s.getTime() != null) {
+			return -1;
+		}
+		if (time != null && s.getTime() != null) {
+			if (time.before(s.getTime())) {
+				return -1;
+			} else if (time.after(s.getTime())) {
+				return 1;
+			}
+		}
+		
+		String lec = lecture == null ? null : lecture.getName(); 
+		String anotherLec = s.getLecture() == null ? null : s.getLecture().getName(); 
+		if (lec != null && anotherLec == null) {
+			return -1;
+		}
+		if (lec == null && anotherLec != null) {
+			return 1;
+		}
+		if (lec != null && anotherLec != null) {
+			return lec.compareTo(anotherLec);
+		}
+
+		return 0;
 	}
 	
 	

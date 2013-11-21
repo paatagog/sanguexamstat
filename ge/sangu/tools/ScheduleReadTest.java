@@ -6,13 +6,18 @@ import ge.sangu.excel.ScheduleItemExcelProcessor;
 import ge.sangu.model.Lecture;
 import ge.sangu.model.Lecturer;
 import ge.sangu.model.ScheduleItem;
+import ge.sangu.renderer.ScheduleHtmlRenderer;
 import ge.sangu.utils.SystemParameters;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 
 public class ScheduleReadTest {
 
 	private static String DATASOURCE_EXCELL_FILE = SystemParameters.INPUT_DATA_FOLDER + "/" + "db.xls";
+	private static String OUTPUT_FILE = SystemParameters.INPUT_DATA_FOLDER + "/" + "Schedule.html";
+	
 	
 	public static void log(String message) {
 		System.out.println(message);
@@ -33,6 +38,12 @@ public class ScheduleReadTest {
 			for (ScheduleItem scheduleItem : scheduleItems) {
 				log(scheduleItem.toString());
 			}
+			ScheduleHtmlRenderer r = new ScheduleHtmlRenderer();
+			r.setScheduleItems(scheduleItems);
+			
+			FileOutputStream fos = new FileOutputStream(new File(OUTPUT_FILE));
+			fos.write(r.render().getBytes("utf-8"));
+			fos.close();
 			
 		} catch (Exception ex) {
 			
