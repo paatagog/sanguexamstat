@@ -80,10 +80,16 @@ public class TaxExcelProcessor {
 		return o;
 	}
 
-	public static void write(WritableSheet sheet, int row, Tax ex, List<Integer> colors) throws RowsExceededException, WriteException {
+	public static void write(WritableSheet sheet, int row, Tax ex, List<Integer> colors, Boolean removed) throws RowsExceededException, WriteException {
 		write(sheet, row, ex);
+		WritableCellFormat format = getCellFormat(Colour.YELLOW2, Pattern.SOLID);
+		if (Boolean.TRUE.equals(removed)) {
+			format = getCellFormat(Colour.RED, Pattern.SOLID);
+		} else if (Boolean.FALSE.equals(removed)) {
+			format = getCellFormat(Colour.GREEN, Pattern.SOLID);
+		}
 		for (Integer i : colors) {
-			sheet.addCell(new Label(i, row, sheet.getCell(i, row).getContents(), getCellFormat(Colour.YELLOW2, Pattern.SOLID)));			
+			sheet.addCell(new Label(i, row, sheet.getCell(i, row).getContents(), format));			
 		}		
 	}
 	

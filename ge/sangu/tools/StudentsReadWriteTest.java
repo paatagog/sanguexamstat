@@ -117,11 +117,11 @@ public class StudentsReadWriteTest {
 			for (Student s : stOrig) {
 				Student ks = studentsKaxa.remove(s.getSanguId());
 				List<Integer> colors = getDiffColors(s, ks);
-				StudentExcelProcessor.write(sheet, row++, s, colors);
+				StudentExcelProcessor.write(sheet, row++, s, colors, ks == null ? false : null);
 			}
 			for (Map.Entry<String, Student> student : studentsKaxa.entrySet()) {
 				List<Integer> colors = getDiffColors(null, student.getValue());
-				StudentExcelProcessor.write(sheet, row++, student.getValue(), colors);
+				StudentExcelProcessor.write(sheet, row++, student.getValue(), colors, true);
 			}
 			
 			workbook.write(); 

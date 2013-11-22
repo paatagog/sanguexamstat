@@ -50,7 +50,7 @@ public class TaxReadWriteTest {
 					t.setStudentLastName(s.getLastName());
 					t.setStudentFullName(s.getFirstName() + " " + s.getLastName());
 				}
-				TaxExcelProcessor.write(sheet, row++, t, colors);
+				TaxExcelProcessor.write(sheet, row++, t, colors, null);
 			}
 			
 			workbook.write(); 
