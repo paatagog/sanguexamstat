@@ -1,6 +1,7 @@
 package ge.sangu.excel;
 
 import ge.sangu.model.Student;
+import ge.sangu.utils.CalendarUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -67,7 +68,7 @@ public class StudentExcelProcessor {
 			s.setCitizenship(sheet.getCell(i++, row).getContents());			
 			s.setPersonalNumber(sheet.getCell(i++, row).getContents());			
 			s.setIdDocumentNumber(sheet.getCell(i++, row).getContents());			
-			s.setBirthDate(sheet.getCell(i++, row).getContents());			
+			s.setBirthDate(CalendarUtils.adjustDate(sheet.getCell(i++, row).getContents()));			
 			s.setBirthPlace(sheet.getCell(i++, row).getContents());			
 			s.setJuridicalAddress(sheet.getCell(i++, row).getContents());			
 			s.setHomePhone(sheet.getCell(i++, row).getContents());			
