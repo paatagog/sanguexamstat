@@ -36,9 +36,6 @@ public class StudentsReadWriteTest {
 			WritableSheet sheet = workbook.createSheet("შედეგი", 0);
 			StudentExcelProcessor.writeHeader(sheet);
 			int row = 1;
-			List<Integer> colors = new ArrayList<Integer> ();
-			colors.add(0);
-			colors.add(3);
 			for (Student s : studnets) {
 				s.setFirstName(GeorgianNamesAdjuster.adjust(s.getFirstName()));
 				s.setPaternalName(GeorgianNamesAdjuster.adjust(s.getPaternalName()));
@@ -225,6 +222,7 @@ public class StudentsReadWriteTest {
 	
 	public static void main(String[] args) {
 		diffFiles();
+//		rewriteExample();
 	}
 
 }
