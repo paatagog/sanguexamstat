@@ -12,8 +12,8 @@ public class Lecture {
 	
 	private List<Lecture> prerequisites;
 	
-	private Double credit; 
-
+	private Double credit;
+	
 	public Integer getId() {
 		return id;
 	}

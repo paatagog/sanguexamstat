@@ -16,6 +16,11 @@ public class ScheduleHtmlRenderer {
 	List<ScheduleItem> scheduleItems = new ArrayList<ScheduleItem>();
 	
 	public String render() {
+		for (ScheduleItem si : scheduleItems) {
+			if (si.getDay() == null) {
+				si.setDay(7);
+			}
+		}
 		Collections.sort(scheduleItems);
 		StringBuilder sb = new StringBuilder();
 		if (appendHTMLHeader) {
@@ -23,6 +28,7 @@ public class ScheduleHtmlRenderer {
 		}
 		int currentDay = 1;
 		State s = State.NONE;
+		ScheduleItem oldSi = null;
 		for (ScheduleItem si : scheduleItems) {
 			if (si.getDay() != currentDay) {
 				switch (s) {
@@ -32,25 +38,41 @@ public class ScheduleHtmlRenderer {
 					endLectureSession(sb);
 				case DAY:
 					endDay(sb);
+					break;
 				case NONE:
 				}
+
+				if (appendEmptyDays) {
+					currentDay++;
+					while (++currentDay < si.getDay()) {
+						startDay(sb, currentDay);
+						endDay(sb);
+					}
+				}
+				
 				startDay(sb, si.getDay());
 				startLectureSession(sb);
 				startLecture(sb);
 				appendLecture(sb, si);
+				endLecture(sb);
+				oldSi = si;
 				s = State.LECTURE;
 			} else {
-				// TODO
-				switch (s) {
-				case LECTURE:
-					endLecture(sb);
-				case LECTURE_SESSION:
-					endLectureSession(sb);
-				case DAY:
-					endDay(sb);
-				case NONE:
+				if (!ScheduleItem.isSameSession(si, oldSi)) {
+					switch (s) {
+					case LECTURE:
+						endLecture(sb);
+					case LECTURE_SESSION:
+						endLectureSession(sb);
+					case DAY:
+					case NONE:
+					}
+					startLectureSession(sb);
 				}
-				
+				startLecture(sb);
+				appendLecture(sb, si);
+				endLecture(sb);
+				oldSi = si;
 			}
 			sb.append(si.toString()).append("<br/>");
 		}		

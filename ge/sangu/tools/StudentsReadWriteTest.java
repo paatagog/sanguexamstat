@@ -2,8 +2,10 @@ package ge.sangu.tools;
 
 import ge.sangu.excel.ExamExcelProcessor;
 import ge.sangu.excel.StudentExcelProcessor;
+import ge.sangu.excel.TaxExcelProcessor;
 import ge.sangu.model.Exam;
 import ge.sangu.model.Student;
+import ge.sangu.model.Tax;
 import ge.sangu.utils.GeorgianNamesAdjuster;
 import ge.sangu.utils.PersonalNumberAdjuster;
 import ge.sangu.utils.SystemParameters;
@@ -220,9 +222,62 @@ public class StudentsReadWriteTest {
 		return !((s1 != null && s2 == null) || (s1 == null && s2 != null) || (s1 != null && s2 != null && !s1.equals(s2)));
 	}
 	
+	public static void missingTaxsChecker() {
+		try {
+			List<Student> students = StudentExcelProcessor.read(SystemParameters.INPUT_DATA_FOLDER + "/" + "students.xls");
+			log("წაკითხულია " + students.size() + " ჩანაწერი პირველი ფაილიდან");
+			Map<String, Student> studentsMap = new HashMap<String, Student>();
+			for (Student student : students) {
+				studentsMap.put(student.getSanguId(), student);
+			}
+
+			List<Tax> processedTaxes = TaxExcelProcessor.read(SystemParameters.INPUT_DATA_FOLDER + "/" + "daricxvebi.xls");
+			log("წაკითხულია " + processedTaxes.size() + " ჩანაწერი დარიცხვების პირველი ფაილიდან");
+
+			List<Tax> allTaxes = TaxExcelProcessor.read(SystemParameters.INPUT_DATA_FOLDER + "/" + "daricxvebiAll.xls");
+			log("წაკითხულია " + allTaxes.size() + " ჩანაწერი დარიცხვების მეორე ფაილიდან");
+
+			Map<String, Tax> processedtaxesMap = new HashMap<String, Tax>();
+			Map<String, Tax> allTaxesMap = new HashMap<String, Tax>();
+			for (Tax t: processedTaxes) {
+				processedtaxesMap.put(t.getId(), t);
+			}
+			
+			for (Tax tax : new ArrayList<Tax>(allTaxes)) {
+				if (!studentsMap.containsKey(tax.getStudentId())) {
+					allTaxes.remove(tax);
+				} else {
+					if (processedtaxesMap.containsKey(tax.getId())) {
+						allTaxes.remove(tax);
+					}
+				}				
+			}
+			
+			for (Tax t: allTaxes) {
+				allTaxesMap.put(t.getId(), t);
+			}
+			
+			WritableWorkbook workbook = Workbook.createWorkbook(new File(SystemParameters.INPUT_DATA_FOLDER + "/" + "tax-missed-records.xls"));
+			WritableSheet sheet = workbook.createSheet("განსხვავებები", 0);
+			TaxExcelProcessor.writeHeader(sheet);
+			int row = 1;
+			for (Tax tax : allTaxes) {
+				TaxExcelProcessor.write(sheet, row++, tax);
+			}
+			
+			workbook.write(); 
+			workbook.close();
+			log("შედეგის ფაილი წარმატებით შეიქმნა");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public static void main(String[] args) {
-		diffFiles();
+//		diffFiles();
 //		rewriteExample();
+		missingTaxsChecker();
 	}
 
 }

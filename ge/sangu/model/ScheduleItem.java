@@ -30,6 +30,22 @@ public class ScheduleItem implements Comparable<ScheduleItem> {
 	
 	private Integer day;
 	
+	public static boolean isSameSession(ScheduleItem s1, ScheduleItem s2) {
+		if (s1 == null || s2 == null) {
+			return false;
+		}
+		if ((s1.getLectureType() == s2.getLectureType()) 
+				&& (s1.getLecture() != null && s2.getLecture() != null && s1.getLecture().getId().equals(s2.getLecture().getId())) 
+				&& (s1.getLecturer() != null && s2.getLecturer() != null && s1.getLecturer().getId().equals(s2.getLecturer().getId()) )
+				&& (s1.getDay() != null && s1.getDay().equals(s2.getDay()))
+				&& (s1.getCourse() != null && s1.getCourse().equals(s2.getCourse())
+				&& (s1.getGroup() != null && s1.getGroup().equals(s2.getGroup())))				
+				) {
+			return true;
+		}
+		return false;
+	}
+
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(id);

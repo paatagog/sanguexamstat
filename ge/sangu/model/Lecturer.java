@@ -1,6 +1,8 @@
 package ge.sangu.model;
 
 public class Lecturer extends Person {
+	
+	private String academicDegree;
 
 	public String getShortName() {
 		StringBuilder sb = new StringBuilder();
@@ -12,6 +14,23 @@ public class Lecturer extends Person {
 		}
 		
 		return sb.toString();
+	}
+	
+	public String getAcademicName() {
+		StringBuilder sb = new StringBuilder();
+		if (academicDegree != null) {
+			sb.append(academicDegree).append(" ");
+		}
+		sb.append(getShortName());
+		return sb.toString();
+	}
+
+	public String getAcademicDegree() {
+		return academicDegree;
+	}
+
+	public void setAcademicDegree(String academicDegree) {
+		this.academicDegree = academicDegree;
 	}
 	
 }

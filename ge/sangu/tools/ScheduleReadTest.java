@@ -6,6 +6,7 @@ import ge.sangu.excel.ScheduleItemExcelProcessor;
 import ge.sangu.model.Lecture;
 import ge.sangu.model.Lecturer;
 import ge.sangu.model.ScheduleItem;
+import ge.sangu.renderer.ScheduleExcellRenderer;
 import ge.sangu.renderer.ScheduleHtmlRenderer;
 import ge.sangu.utils.SystemParameters;
 
@@ -45,6 +46,10 @@ public class ScheduleReadTest {
 			fos.write(r.render().getBytes("utf-8"));
 			fos.close();
 			
+			ScheduleExcellRenderer er = new ScheduleExcellRenderer();
+			er.setScheduleItems(scheduleItems);
+			er.render();
+
 		} catch (Exception ex) {
 			
 		}
