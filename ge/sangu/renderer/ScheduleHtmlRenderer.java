@@ -3,12 +3,15 @@ package ge.sangu.renderer;
 import ge.sangu.model.ScheduleItem;
 import ge.sangu.utils.CalendarUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class ScheduleHtmlRenderer {
 	
+	private static SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+
 	private boolean appendHTMLHeader = true;
 
 	private boolean appendEmptyDays = true;
@@ -16,115 +19,128 @@ public class ScheduleHtmlRenderer {
 	List<ScheduleItem> scheduleItems = new ArrayList<ScheduleItem>();
 	
 	public String render() {
+		Collections.sort(scheduleItems);
+		List <List<ScheduleItem>> days = new ArrayList <List<ScheduleItem>>();
+		for (int i = 0; i < 8; i++) {
+			days.add(new ArrayList<ScheduleItem>());
+		}
 		for (ScheduleItem si : scheduleItems) {
 			if (si.getDay() == null) {
-				si.setDay(7);
+				days.get(6).add(si);
+			} else {
+				days.get(si.getDay() - 1).add(si);
 			}
 		}
-		Collections.sort(scheduleItems);
+		
 		StringBuilder sb = new StringBuilder();
 		if (appendHTMLHeader) {
 			appendHTMLHeader(sb);
 		}
-		int currentDay = 1;
-		State s = State.NONE;
-		ScheduleItem oldSi = null;
-		for (ScheduleItem si : scheduleItems) {
-			if (si.getDay() != currentDay) {
-				switch (s) {
-				case LECTURE:
-					endLecture(sb);
-				case LECTURE_SESSION:
-					endLectureSession(sb);
-				case DAY:
-					endDay(sb);
-					break;
-				case NONE:
-				}
 
-				if (appendEmptyDays) {
-					currentDay++;
-					while (++currentDay < si.getDay()) {
-						startDay(sb, currentDay);
-						endDay(sb);
-					}
-				}
-				
-				startDay(sb, si.getDay());
-				startLectureSession(sb);
-				startLecture(sb);
-				appendLecture(sb, si);
-				endLecture(sb);
-				oldSi = si;
-				s = State.LECTURE;
-			} else {
-				if (!ScheduleItem.isSameSession(si, oldSi)) {
-					switch (s) {
-					case LECTURE:
-						endLecture(sb);
-					case LECTURE_SESSION:
-						endLectureSession(sb);
-					case DAY:
-					case NONE:
-					}
+		for (int i = 0; i < 8; i++) {
+			if (days.get(i).size() != 0 || (appendEmptyDays && i < 6)) {
+				startDay(sb, i + 1);
+				List <List<ScheduleItem>> sessions = getLectureSessions(days.get(i));
+				for (List<ScheduleItem> session : sessions) {
 					startLectureSession(sb);
-				}
-				startLecture(sb);
-				appendLecture(sb, si);
-				endLecture(sb);
-				oldSi = si;
+					for (ScheduleItem si: session) {
+						startLecture(sb);
+						appendLecture(sb, si);
+						endLecture(sb);
+					}
+					endLectureSession(sb);
+				}				
+				endDay(sb);
 			}
-			sb.append(si.toString()).append("<br/>");
-		}		
+		}
+		
 		if (appendHTMLHeader) {
 			appendHTMLFooter(sb);
 		}
 		return sb.toString();
 	}
 	
+	private List <List<ScheduleItem>> getLectureSessions(List<ScheduleItem> scheduleItems) {
+		List <List<ScheduleItem>> sessions = new ArrayList <List<ScheduleItem>>();
+		ScheduleItem oldSi = null;
+		for (ScheduleItem si : scheduleItems) {
+			if (ScheduleItem.isSameSession(si, oldSi)) {
+				sessions.get(sessions.size() - 1).add(si);
+			} else {
+				List<ScheduleItem> l = new ArrayList<ScheduleItem>();
+				l.add(si);
+				sessions.add(l);
+			}
+			oldSi = si;
+		}
+		return sessions;
+	}
+	
 	public void appendHTMLHeader(StringBuilder sb) {
-		sb.append("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">");
-		sb.append("<HTML><HEAD>");
-		sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">");
-		sb.append("</HEAD><BODY>");
+		sb.append("<!-- adding html header -->\n");
+		sb.append("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">").append("\n")
+		.append("<HTML><HEAD>").append("\n")
+		.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">").append("\n")
+		.append("</HEAD><BODY>").append("\n");
 	}
 
 	public void appendHTMLFooter(StringBuilder sb) {
-		sb.append("</BODY></HTML>");
+		sb.append("<!-- adding html footer -->\n");
+		sb.append("\n").append("</BODY></HTML>");
 	}
 	
 	public void appendLecture(StringBuilder sb, ScheduleItem si) {
-		
+		sb.append("<!-- appending lecture -->\n");
+		if (si.getTime() != null) {
+			sb.append(sdf.format(si.getTime())).append(" ");
+		}
+		if (si.getLecture() != null) {
+			sb.append(si.getLecture().getName()).append(" ");
+			if (si.getLectureType() != null) {
+				sb.append("(").append(si.getLectureType().getName()).append(")").append(" ");
+			}
+		}		
+		if (si.getLecturer() != null) {
+			sb.append(si.getLecturer().getShortName()).append(" ");
+		}
+		sb.append(si.getRoom()).append(" ");
+		sb.append("</br>").append("\n");
 	}
 	
 	public void startDay(StringBuilder sb, int day) {
-		sb.append("<table>");
-		sb.append("<tr>");
-		sb.append("<td>");
-		sb.append(CalendarUtils.getWeekDayName(day));
-		sb.append("</td>");
-		sb.append("</tr>");
+		sb.append("<!-- starting day -->\n");
+		sb.append("<table cellspacing='0px' cellpadding='0px' style='width:800px;border-width:0px; border-style:solid;border-collapse:collapse;'>").append("\n")
+		.append("<tr>").append("\n")
+		.append("<td style='border-width:0px;border-style:double;text-align:center;'>").append("\n")
+		.append(CalendarUtils.getWeekDayName(day)).append("\n")
+		.append("</td>").append("\n")
+		.append("</tr>").append("\n");
 	}
 	
 	public void endDay(StringBuilder sb) {
-		sb.append("</table>");
+		sb.append("<!-- ending day -->\n");
+		sb.append("</table>").append("</br>").append("\n");
 	}
 
 	public void startLectureSession(StringBuilder sb) {
-		sb.append("<tr>");
-		sb.append("<td>");
+		sb.append("<!-- starting lecture session -->\n");
+		sb.append("<tr>").append("\n")
+		.append("<td style='border-width:1px;border-style:solid'>").append("\n");
 	}
 
 	public void endLectureSession(StringBuilder sb) {
-		sb.append("</td>");
-		sb.append("</tr>");
+		sb.append("<!-- ending lecture session -->\n");
+		sb.append("</td>").append("\n")
+		.append("</tr>").append("\n");
 	}
 
 	public void startLecture(StringBuilder sb) {
+		sb.append("<!-- starting lecture -->\n");
 		
 	}
 
 	public void endLecture(StringBuilder sb) {
+		sb.append("<!-- ending lecture -->\n");
 		
 	}
 

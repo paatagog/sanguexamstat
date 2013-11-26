@@ -14,7 +14,7 @@ public class CalendarUtils {
 	public static String[] weekDayNames = {"ორშაბათი", "სამშაბათი", "ოთხშაბათი", "ხუთშაბათი", "პარასკევი", "შაბათი", "კვირა"}; 
 	
 	public static String getWeekDayName(Integer weekDayNumber) {
-		if (weekDayNumber == null || weekDayNumber < 1 || weekDayNumber > 6) {
+		if (weekDayNumber == null || weekDayNumber < 1 || weekDayNumber > 7) {
 			return "N/A";
 		}
 		return weekDayNames[weekDayNumber - 1];
