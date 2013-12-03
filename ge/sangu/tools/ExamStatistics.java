@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ExamStatistics {
-	public static String INPUT_FILE = "c:/dev/sanguexamstat/sources/resources/input.txt";
+	public static String INPUT_FILE = "c:/dev/sanguexamstat/sources/resources/exammarks.txt";
 	
 	private static String countMean(List<Integer> marks) {
 		if (marks == null || marks.size() == 0) {
