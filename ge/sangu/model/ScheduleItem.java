@@ -34,6 +34,9 @@ public class ScheduleItem implements Comparable<ScheduleItem> {
 		if (s1 == null || s2 == null) {
 			return false;
 		}
+		if (s1.getLectureType() == s2.getLectureType() && s1.getLecture().getId() != null && s1.getLecture().getId().intValue() == 7) {
+			return true;
+		}
 		if ((s1.getLectureType() == s2.getLectureType()) 
 				&& (s1.getLecture() != null && s2.getLecture() != null && s1.getLecture().getId().equals(s2.getLecture().getId())) 
 				&& (s1.getLecturer() != null && s2.getLecturer() != null && s1.getLecturer().getId().equals(s2.getLecturer().getId()) )
