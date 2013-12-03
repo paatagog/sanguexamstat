@@ -47,8 +47,8 @@ public class ScheduleReadTest {
 
 	private static void filterScheduleItems(List<ScheduleItem> scheduleItems) {
 		for (ScheduleItem si : new ArrayList<ScheduleItem>(scheduleItems)) {
-			if (si.getCourse() == null || si.getCourse().intValue() != 2 || 
-			    si.getGroup() == null || !si.getGroup().equals("1") || 
+			if (si.getCourse() == null || si.getCourse().intValue() != 1 || 
+			    si.getGroup() == null || !si.getGroup().equals("4") || 
 			    si.getAcademicLevel() != AcademicLevel.BACHELOR) {
 				scheduleItems.remove(si);
 			}
