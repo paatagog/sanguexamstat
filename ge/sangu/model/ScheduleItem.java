@@ -28,6 +28,8 @@ public class ScheduleItem implements Comparable<ScheduleItem> {
 	
 	private String group;
 	
+	private String actualGroup;
+	
 	private Integer day;
 	
 	public static boolean isSameSession(ScheduleItem s1, ScheduleItem s2) {
@@ -209,6 +211,14 @@ public class ScheduleItem implements Comparable<ScheduleItem> {
 		}
 
 		return 0;
+	}
+
+	public String getActualGroup() {
+		return actualGroup;
+	}
+
+	public void setActualGroup(String actualGroup) {
+		this.actualGroup = actualGroup;
 	}
 	
 	
