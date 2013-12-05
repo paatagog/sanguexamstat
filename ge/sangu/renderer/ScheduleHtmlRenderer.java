@@ -211,7 +211,7 @@ public class ScheduleHtmlRenderer {
 		.append("  <td style='border-width:0px;border-style:double;text-align:center;'>").append("\n")
 		.append("   ")
 		.append("<span style='font-weight:bold;font-size:18px'>")
-		.append(CalendarUtils.getWeekDayName(day)).append("\n")
+		.append(CalendarUtils.getWeekDayName(day))
 		.append("</span>")
 		.append("  </td>").append("\n")
 		.append(" </tr>").append("\n");

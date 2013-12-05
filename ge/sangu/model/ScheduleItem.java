@@ -39,6 +39,9 @@ public class ScheduleItem implements Comparable<ScheduleItem> {
 		if (s1.getLectureType() == s2.getLectureType() && s1.getLecture().getId() != null && s1.getLecture().getId().intValue() == 7) {
 			return true;
 		}
+		if (s1.getLectureType() == s2.getLectureType() && s1.getLecture().getId() != null && s1.getLecture().getId().intValue() == 2) {
+			return true;
+		}
 		if ((s1.getLectureType() == s2.getLectureType()) 
 				&& (s1.getLecture() != null && s2.getLecture() != null && s1.getLecture().getId().equals(s2.getLecture().getId())) 
 				&& (s1.getLecturer() != null && s2.getLecturer() != null && s1.getLecturer().getId().equals(s2.getLecturer().getId()) )
@@ -77,6 +80,9 @@ public class ScheduleItem implements Comparable<ScheduleItem> {
 		}
 		if (group != null) {
 			sb.append(" ").append(group);
+		}
+		if (actualGroup != null) {
+			sb.append(" ").append(actualGroup);
 		}
 		if (day != null) {
 			sb.append(" ").append(CalendarUtils.getWeekDayName(day));
@@ -168,6 +174,14 @@ public class ScheduleItem implements Comparable<ScheduleItem> {
 		this.day = day;
 	}
 
+	public String getActualGroup() {
+		return actualGroup;
+	}
+
+	public void setActualGroup(String actualGroup) {
+		this.actualGroup = actualGroup;
+	}
+
 	@Override
 	public int compareTo(ScheduleItem s) {
 		if (day != null && s.getDay() == null) {
@@ -213,13 +227,4 @@ public class ScheduleItem implements Comparable<ScheduleItem> {
 		return 0;
 	}
 
-	public String getActualGroup() {
-		return actualGroup;
-	}
-
-	public void setActualGroup(String actualGroup) {
-		this.actualGroup = actualGroup;
-	}
-	
-	
 }

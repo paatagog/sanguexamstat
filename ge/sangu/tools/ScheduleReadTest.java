@@ -19,7 +19,7 @@ import java.util.List;
 public class ScheduleReadTest {
 
 	private static String DATASOURCE_EXCELL_FILE = SystemParameters.INPUT_DATA_FOLDER + "/" + "db.xls";
-	private static String OUTPUT_FILE = SystemParameters.INPUT_DATA_FOLDER + "/" + "Schedule.html";
+	private static String OUTPUT_SCHEDULE_FILE_PREFIX = SystemParameters.INPUT_DATA_FOLDER + "/" + "schedule-";
 	
 	
 	public static void log(String message) {
@@ -45,31 +45,65 @@ public class ScheduleReadTest {
 		er.render();
 	}
 
-	private static void filterScheduleItems(List<ScheduleItem> scheduleItems) {
+	private static void filterScheduleItems(List<ScheduleItem> scheduleItems, Integer course, String group, AcademicLevel academicLevel) {
 		for (ScheduleItem si : new ArrayList<ScheduleItem>(scheduleItems)) {
-			if (si.getCourse() == null || si.getCourse().intValue() != 1 || 
-			    si.getGroup() == null || !si.getGroup().equals("4") || 
-			    si.getAcademicLevel() != AcademicLevel.BACHELOR) {
+			if (si.getCourse() == null || si.getCourse().intValue() != course.intValue() || 
+			    si.getGroup() == null || !si.getGroup().equals(group) || 
+			    si.getAcademicLevel() != academicLevel) {
 				scheduleItems.remove(si);
 			}
 		}
 	}
-	
+
 	public static void generateHtmlSchedule() throws Exception {
+		List<ScheduleItem> scheduleItems = readScheduleItemsFromFile();
+		writeGroupScheduleToFile(scheduleItems, 1, "1", AcademicLevel.BACHELOR);
+		writeGroupScheduleToFile(scheduleItems, 1, "2", AcademicLevel.BACHELOR);
+		writeGroupScheduleToFile(scheduleItems, 1, "3", AcademicLevel.BACHELOR);
+		writeGroupScheduleToFile(scheduleItems, 1, "4", AcademicLevel.BACHELOR);
+		writeGroupScheduleToFile(scheduleItems, 2, "1", AcademicLevel.BACHELOR);
+		writeGroupScheduleToFile(scheduleItems, 2, "2", AcademicLevel.BACHELOR);
+		writeGroupScheduleToFile(scheduleItems, 2, "3", AcademicLevel.BACHELOR);
+		writeGroupScheduleToFile(scheduleItems, 3, "1", AcademicLevel.BACHELOR);
+		writeGroupScheduleToFile(scheduleItems, 3, "2", AcademicLevel.BACHELOR);
+		writeGroupScheduleToFile(scheduleItems, 3, "3", AcademicLevel.BACHELOR);
+		writeGroupScheduleToFile(scheduleItems, 4, "1", AcademicLevel.BACHELOR);
+		writeGroupScheduleToFile(scheduleItems, 4, "2", AcademicLevel.BACHELOR);
+		writeGroupScheduleToFile(scheduleItems, 4, "3", AcademicLevel.BACHELOR);
+		writeGroupScheduleToFile(scheduleItems, 4, "4", AcademicLevel.BACHELOR);
+		writeGroupScheduleToFile(scheduleItems, 1, "1", AcademicLevel.MAGISTRACY);
+		writeGroupScheduleToFile(scheduleItems, 2, "1", AcademicLevel.MAGISTRACY);
+		writeGroupScheduleToFile(scheduleItems, 1, "1", AcademicLevel.DOCTORATE);
+		writeGroupScheduleToFile(scheduleItems, 1, "3", AcademicLevel.DOCTORATE);
+		writeGroupScheduleToFile(scheduleItems, 2, "1", AcademicLevel.DOCTORATE);
+		log("ცხრილის ფაილები წარმატებით შეიქმნა!");
+	}
+	
+	private static List<ScheduleItem> readScheduleItemsFromFile() throws Exception {
 		List<Lecturer> lecturers = LecturerExcelProcessor.read(DATASOURCE_EXCELL_FILE, null, "ლექტორები");
 		List<Lecture> lectures = LectureExcelProcessor.read(DATASOURCE_EXCELL_FILE, null, "საგნები");
 		ScheduleItemExcelProcessor proc = new ScheduleItemExcelProcessor();
 		proc.setLecturers(lecturers);
 		proc.setLectures(lectures);
-		List<ScheduleItem> scheduleItems = proc.read(DATASOURCE_EXCELL_FILE, null, "ცხრილი");
-		filterScheduleItems(scheduleItems);
-		for (ScheduleItem scheduleItem : scheduleItems) {
-			log(scheduleItem.toString());
-		}
+		return proc.read(DATASOURCE_EXCELL_FILE, null, "ცხრილი");
+	}
+		
+	private static void writeGroupScheduleToFile(List<ScheduleItem> scheduleItems, Integer course, String group, AcademicLevel academicLevel) throws Exception {
+		List<ScheduleItem> siList = new ArrayList<ScheduleItem> (scheduleItems);
+		filterScheduleItems(siList, course, group, academicLevel);
+		writeScheduleItemsToFile(siList, OUTPUT_SCHEDULE_FILE_PREFIX + academicLevel + "-kursi-" + course + "-jgufi-" + group + ".inc");
+	}
+
+	private static void writeScheduleItemsToFile(List<ScheduleItem> scheduleItems, String fileName) throws Exception {
 		ScheduleHtmlRenderer r = new ScheduleHtmlRenderer();
+		r.setAppendHTMLHeader(false);
 		r.setScheduleItems(scheduleItems);
-		FileOutputStream fos = new FileOutputStream(new File(OUTPUT_FILE));
-		fos.write(r.render().getBytes("utf-8"));
+		writeStringToFile(r.render(), fileName);
+	}
+	
+	private static void writeStringToFile(String data, String fileName) throws Exception {
+		FileOutputStream fos = new FileOutputStream(new File(fileName));
+		fos.write(data.getBytes("utf-8"));
 		fos.close();
 	}
 
