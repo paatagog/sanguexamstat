@@ -42,6 +42,8 @@ public class ScheduleHtmlRenderer {
 		if (appendHTMLHeader) {
 			appendHTMLHeader(sb);
 		}
+		
+		sb.append("<a href=\"index.php?page=3\">ჯგუფების სია</a><br/><br/>\n\n");
 
 		for (int i = 0; i < 8; i++) {
 			if (days.get(i).size() != 0 || (appendEmptyDays && i < 6)) {
@@ -66,9 +68,8 @@ public class ScheduleHtmlRenderer {
 			hours.add(si.getTime());
 		}
 		String lectureTitle = session.get(0).getLecture() == null ? null : session.get(0).getLecture().getName();
-		String lecturer = session.get(0).getLecturer() == null ? null : session.get(0).getLecturer().getShortName();
 		String lectureType = session.get(0).getLectureType() == null ? null : session.get(0).getLectureType().getName(); 
-		appendLectureSession(sb, hours, lectureTitle, lectureType, lecturer, getRooms(session));
+		appendLectureSession(sb, hours, lectureTitle, lectureType, getLecturers(session), getRooms(session));
 	}
 	
 	private void appendLectureSession(StringBuilder sb, Set<Date> hours, String LectureTitle, String lectureType, String lecturer, String rooms) {
@@ -120,7 +121,7 @@ public class ScheduleHtmlRenderer {
 			}
 			
 			if (rooms.size() != 0) {
-				if (session.get(0).getLecture() != null && session.get(0).getLecture().getId() != null && session.get(0).getLecture().getId().intValue() == 7) {
+				if (session.get(0).isForeignLanguage() || session.get(0).isTraning()) {
 					List<String> roomsList = new ArrayList<String>(rooms);
 					Collections.sort(roomsList);
 					sb.append(roomsList.get(0));
@@ -140,6 +141,37 @@ public class ScheduleHtmlRenderer {
 		return sb.toString();
 	}
 	
+	private String getLecturers(List<ScheduleItem> session) {
+		StringBuilder sb = new StringBuilder();
+		if (session != null && session.size() != 0) {
+			Set <String> lecturers = new HashSet<String>();
+			for (ScheduleItem scheduleItem : session) {
+				if (scheduleItem.getLecturer() != null) {
+					lecturers.add(scheduleItem.getLecturer().getShortName());
+				}
+			}
+			
+			if (lecturers.size() != 0) {
+				if (session.get(0).isForeignLanguage() || session.get(0).isTraning()) {
+					List<String> lecturerList = new ArrayList<String>(lecturers);
+					Collections.sort(lecturerList);
+					sb.append(lecturerList.get(0));
+					for(int i = 1; i < lecturerList.size(); i++) {
+						sb.append(", ").append(lecturerList.get(i));
+					}
+				} else {
+					sb.append(session.get(0).getLecturer() == null ? "" : session.get(0).getLecturer().getShortName());
+					if (lecturers.size() > 1) {
+						for(int i = 1; i < session.size(); i++) {
+							sb.append(", ").append(session.get(i).getLecturer() == null ? "" : session.get(i).getLecturer().getShortName());
+						}
+					}
+				}
+			}
+		}
+		return sb.toString();
+	}
+
 	private List <List<ScheduleItem>> getLectureSessions(List<ScheduleItem> scheduleItems) {
 		List <List<ScheduleItem>> sessions = new ArrayList <List<ScheduleItem>>();
 		ScheduleItem oldSi = null;

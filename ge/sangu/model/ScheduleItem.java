@@ -8,6 +8,10 @@ import java.util.Date;
 
 public class ScheduleItem implements Comparable<ScheduleItem> {
 	
+	private static int FOREIGN_LANGUAGE = 2;
+	
+	private static int TRANING = 7;
+	
 	private static SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 	
 	private Integer id;
@@ -36,10 +40,10 @@ public class ScheduleItem implements Comparable<ScheduleItem> {
 		if (s1 == null || s2 == null) {
 			return false;
 		}
-		if (s1.getLectureType() == s2.getLectureType() && s1.getLecture().getId() != null && s1.getLecture().getId().intValue() == 7) {
+		if (s1.isForeignLanguage() && s2.isForeignLanguage()) {
 			return true;
 		}
-		if (s1.getLectureType() == s2.getLectureType() && s1.getLecture().getId() != null && s1.getLecture().getId().intValue() == 2) {
+		if (s1.isTraning() && s2.isTraning()) {
 			return true;
 		}
 		if ((s1.getLectureType() == s2.getLectureType()) 
@@ -226,5 +230,12 @@ public class ScheduleItem implements Comparable<ScheduleItem> {
 
 		return 0;
 	}
+	
+	public boolean isForeignLanguage() {
+		return lecture != null && lecture.getId() != null && lecture.getId().intValue() == FOREIGN_LANGUAGE;
+	}
 
+	public boolean isTraning() {
+		return lecture != null && lecture.getId() != null && lecture.getId().intValue() == TRANING;
+	}
 }
