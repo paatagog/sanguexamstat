@@ -103,9 +103,11 @@ public class StudentExcelProcessor {
 		} else if (Boolean.FALSE.equals(removed)) {
 			format = getCellFormat(Colour.GREEN, Pattern.SOLID);
 		}
-		for (Integer i : colors) {
-			sheet.addCell(new Label(i, row, sheet.getCell(i, row).getContents(), format));			
-		}		
+		if (colors != null) {
+			for (Integer i : colors) {
+				sheet.addCell(new Label(i, row, sheet.getCell(i, row).getContents(), format));			
+			}
+		}
 	}
 	
 	private static WritableCellFormat getCellFormat(Colour colour, Pattern pattern) throws WriteException {

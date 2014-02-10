@@ -132,6 +132,36 @@ public class StudentsReadWriteTest {
 		}
 	}
 	
+	public static void incSemesters() {
+		try {
+			List<Student> stOrig = StudentExcelProcessor.read(SystemParameters.INPUT_DATA_FOLDER + "/" + "studentsOriginal.xls");
+			log("წაკითხულია " + stOrig.size() + " ჩანაწერი პირველი ფაილიდან");
+			WritableWorkbook workbook = Workbook.createWorkbook(new File(SystemParameters.INPUT_DATA_FOLDER + "/" + "students-increased.xls"));
+			WritableSheet sheet = workbook.createSheet("მიმატებული", 0);
+			StudentExcelProcessor.writeHeader(sheet);
+			int row = 1;
+			for (Student s : stOrig) {
+				if (s.getAcademicStatus() != null && "აქტიური".equals(s.getAcademicStatus().trim())) {
+					try {
+						int newSemester = Integer.parseInt(s.getCurrentSemester()) + 1;
+						s.setCurrentSemester(String.valueOf(newSemester));
+						if (newSemester % 2 != 0) {
+							System.out.println(s.getFirstName() + " " + s.getLastName());
+						}
+					} catch (Exception ignore) {
+						
+					}
+				}
+				StudentExcelProcessor.write(sheet, row++, s, null, false);
+			}
+			workbook.write(); 
+			workbook.close();
+			log("შედეგის ფაილი წარმატებით შეიქმნა");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	public static List<Integer> getDiffColors(Student s1, Student s2) {
 		List<Integer> diff = new ArrayList<Integer> ();
 
@@ -276,8 +306,9 @@ public class StudentsReadWriteTest {
 	
 	public static void main(String[] args) {
 //		diffFiles();
+		incSemesters();
 //		rewriteExample();
-		missingTaxsChecker();
+//		missingTaxsChecker();
 	}
 
 }
