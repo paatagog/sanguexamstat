@@ -115,6 +115,12 @@ public class StudentsReadWriteTest {
 			int row = 1;
 			for (Student s : stOrig) {
 				Student ks = studentsKaxa.remove(s.getSanguId());
+				if (s != null && s.getEmail() != null) {
+					s.setEmail(s.getEmail().toLowerCase());
+				}
+				if (s != null && s.getOrderNumber() != null) {
+					s.setOrderNumber(s.getOrderNumber().replaceAll("/", "-"));
+				}
 				List<Integer> colors = getDiffColors(s, ks);
 				StudentExcelProcessor.write(sheet, row++, s, colors, ks == null ? false : null);
 			}
@@ -141,6 +147,13 @@ public class StudentsReadWriteTest {
 			StudentExcelProcessor.writeHeader(sheet);
 			int row = 1;
 			for (Student s : stOrig) {
+//				if (s != null && s.getEmail() != null) {
+//					s.setEmail(s.getEmail().toLowerCase());
+//				}
+//				if (s != null && s.getOrderNumber() != null) {
+//					s.setOrderNumber(s.getOrderNumber().replaceAll("/", "-"));
+//				}
+
 				if (s.getAcademicStatus() != null && "აქტიური".equals(s.getAcademicStatus().trim())) {
 					try {
 						int newSemester = Integer.parseInt(s.getCurrentSemester()) + 1;
