@@ -305,8 +305,8 @@ public class StudentsReadWriteTest {
 	}
 	
 	public static void main(String[] args) {
-//		diffFiles();
-		incSemesters();
+		diffFiles();
+//		incSemesters();
 //		rewriteExample();
 //		missingTaxsChecker();
 	}
